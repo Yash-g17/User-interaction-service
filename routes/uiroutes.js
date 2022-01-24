@@ -6,6 +6,11 @@ router.post('/like', (req, res) => {
     ui.like(req, res);
 })
 
-router.post('read', (req, res) => {
+router.post('/read', (req, res) => {
     ui.read(req, res);
 })
+
+// router.get('/list', (req, res) => {
+//     fetch('')
+// })
+module.exports = router

@@ -4,4 +4,4 @@ mongoose.connect('mongodb://mongo:27017/uiDB', { useNewUrlParser: true }, (err) 
     else console.log('error in connection ' + error);
 })
 
-require('./content.model.js');
+require('./ui.model.js');
