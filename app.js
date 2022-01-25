@@ -3,6 +3,7 @@ const uirouter = require('./routes/uiroutes')
 const express = require("express");
 var bodyParser = require('body-parser');
 const app = express();
+
 app.use(bodyParser.json())
 
 app.use('/ui', uirouter)

@@ -6,38 +6,59 @@ var ObjectId = require('mongodb').ObjectId;
 
 var uicontroller = {}
 
+
+
 uicontroller.read = (req, res) => {
-    console.log(req.body.userid)
-    let body1 = `{"id": "${req.body.userid}"}`;
-    fetch("http://localhost:3002/user/finduser", {
+
+    var raw1 = JSON.stringify({
+        "id": `${req.body.userid}`
+    });
+    var requestOptions = {
         method: 'POST',
-        body: JSON.parse(body1)
-    }).then((resuser) => {
-        console.log(resuser);
-        if (resuser == "") {
-            console.log(res.user);
-            res.send("User does not exist")
-        }
-        else {
-            ui.findByIdAndUpdate(req.body.userid, { $push: { reads: req.body.contentid } }, (err) => {
-                if (err) res.send("there was an error")
-            });
-            fetch("http://content-service_content-service-cont_1:3000/content/listid", {
-                method: 'POST',
-                body: JSON.parse(`{"id": "${req.body.contentid}"}`)
-            }).then((res1) => {
-                body2 = `{
-            "reads":${res1.body.reads + 1}, 
-            }`
-                fetch("https://content-service_content-service-cont_1:3000/content/update", {
+        headers: { 'Content-Type': 'application/json' },
+        body: raw1,
+        redirect: 'follow'
+    };
+    fetch("http://user:3002/user/find", requestOptions)
+        .then(response => response.json())
+        .then((resuser) => {
+            if (resuser == "") {
+                res.send("User does not exist")
+            }
+            else {
+                ui.findByIdAndUpdate(req.body.userid, { $push: { reads: req.body.contentid } }, (err) => {
+                    if (err) res.send("there was an error")
+                });
+
+                var raw2 = JSON.stringify({
+                    "id": `${req.body.contentid}`
+                });
+
+                var requestOptions = {
                     method: 'POST',
-                    body: JSON.parse(body2)
-                }).then(res.send("Added read"))
-            })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: raw2,
+                    redirect: 'follow'
+                };
+                fetch("http://content:3000/content/listid", requestOptions)
+                    .then(response1 => response1.json()).then(res1 => {
+                        console.log(res1[0].reads);
+                        var raw3 = JSON.stringify({
+                            "id": `${req.body.contentid}`,
+                            "reads": `${res1[0].reads + 1}`,
+                        });
+                        var requestOptions = {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: raw3,
+                            redirect: 'follow'
+                        };
+                        fetch("http://content:3000/content/update", requestOptions).then(res.send("Added read")).catch((err) => console.log(err))
+                    })
 
-        }
+            }
 
-    })
+        })
 }
 
 uicontroller.like = (req, res) => {
@@ -64,5 +85,11 @@ uicontroller.like = (req, res) => {
         }).then(res.send("Added like"))
     })
 
+}
+
+uicontroller.list = (req, res) => {
+    fetch('http://user:3002/user/listUsers').then(resp => resp.json()).then(data => {
+        res.send(data)
+    })
 }
 module.exports = uicontroller;

@@ -10,7 +10,7 @@ router.post('/read', (req, res) => {
     ui.read(req, res);
 })
 
-// router.get('/list', (req, res) => {
-//     fetch('')
-// })
+router.get('/list', (req, res) => {
+    ui.list(req, res);
+})
 module.exports = router

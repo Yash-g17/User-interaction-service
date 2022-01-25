@@ -1,12 +1,12 @@
 version: "3"
 services:
-  ui-service-cont:
+  ui:
     build: .
     ports:
       - "3001:3001"
     volumes:
       - ./:/myapp2
-      - /myapp/node_modules
+      - /myapp2/node_modules
     environment:
       - PORT=3001
     depends_on:
@@ -15,14 +15,12 @@ services:
     #   - uinetwork
   mongo:
     image: mongo
-    # environment:
-    #   - MONGO_INIT_ROOT_USERNAME=yash
-    #   - MONGO_INIT_ROOT_USERNAME=mypassword  
     volumes:
       - mongo-db:/data/db2
 volumes:
   mongo-db:
-# networks:
-#   uinetwork:
-#     driver: bridge
-#     # external:true
+
+networks:
+  default:
+    external:
+      name: bridge-network
