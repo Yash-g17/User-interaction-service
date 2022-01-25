@@ -11,8 +11,6 @@ services:
       - PORT=3001
     depends_on:
       - mongoui
-    # networks:
-    #   - uinetwork
   mongoui:
     image: mongo
     volumes:

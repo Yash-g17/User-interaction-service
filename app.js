@@ -2,14 +2,14 @@ require('./models/db')
 const uirouter = require('./routes/uiroutes')
 const express = require("express");
 var bodyParser = require('body-parser');
-const cron = require("node-cron")
+// const cron = require("node-cron")
 const app = express();
 
 app.use(bodyParser.json())
 
-cron.schedule("* 0 * * *", function () {
-    console.log("service is up and running ");
-});
+// cron.schedule("* 0 * * *", function () {
+//     console.log("service is up and running ");
+// });
 
 app.use('/ui', uirouter)
 app.get('/', (req, res) => {
