@@ -10,15 +10,15 @@ services:
     environment:
       - PORT=3001
     depends_on:
-      - mongo
+      - mongoui
     # networks:
     #   - uinetwork
-  mongo:
+  mongoui:
     image: mongo
     volumes:
-      - mongo-db:/data/db2
+      - mongo-db-ui:/data/db2
 volumes:
-  mongo-db:
+  mongo-db-ui:
 
 networks:
   default:

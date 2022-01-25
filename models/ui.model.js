@@ -5,4 +5,4 @@ var uiSchema = new mongoose.Schema({
     likes: [{ type: mongoose.SchemaTypes.ObjectId }]
 })
 
-mongoose.model('User-Interaction', uiSchema)
+mongoose.model('user_interaction', uiSchema)
